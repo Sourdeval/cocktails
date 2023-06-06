@@ -1,0 +1,14 @@
+<div class="topright">
+    <a routerLink="/"><h5>Back</h5></a>
+</div>
+
+<div align="center">
+    <form [formGroup]="loginForm">
+        <h5>Email :</h5>
+        <input type="email" formControlName="email">
+        <h5>Mot de passe :</h5>
+        <input type="password" formControlName="password">
+        <br> <br>
+        <button [disabled]='loginForm.invalid' (click)="login()">Connexion</button>
+    </form>
+</div>

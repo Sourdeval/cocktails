@@ -12,7 +12,7 @@ h1, h2, h3, h4, h5, h6, input {
 }
 
 /* Titles */
-h1, h2, h3 {
+h1, h2, h3, h5 {
     color: whitesmoke;
     margin: 12px;
 }
@@ -33,7 +33,7 @@ h4 {
 }
 
 /* Texts */
-h5, h6 {
+h6 {
     color: black;
 }
 
@@ -99,4 +99,11 @@ a {
 
 div.spacer{
     flex: auto;
+}
+
+.topright{
+    position: fixed;
+    top: 0;
+    right:0;
+    margin:8px;
 }

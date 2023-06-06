@@ -1,10 +1,4 @@
 <h1 align="center" style="height: 40%;"><img style="height: 100%; margin:12px; margin-bottom: 2px;" src="assets/cocktails-icon.png" alt=""></h1>
 <h1 align="center">Cocktails</h1>
 
-<div>
-    <form [formGroup]="numberForm">
-        <h3>Entrez le code de la soirée :</h3>
-        <input type="text" formControlName='code'>
-        <button type="submit" [disabled]="!numberForm.valid" (click)='submitCode()'>OK</button>
-    </form>
-</div>
+<router-outlet></router-outlet>

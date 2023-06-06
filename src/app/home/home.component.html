@@ -1,0 +1,11 @@
+<div style="position: fixed; top: 0; right:0; margin:8px;">
+    <a routerLink="/login"><h5>Login</h5></a>
+</div>
+
+<div align="center">
+    <form [formGroup]="numberForm">
+        <h3>Entrez le code de la soirée :</h3>
+        <input type="text" formControlName='code'>
+        <button [disabled]="!numberForm.valid" (click)='submitCode()'>OK</button>
+    </form>
+</div>
