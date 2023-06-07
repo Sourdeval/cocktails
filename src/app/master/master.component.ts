@@ -1,22 +1,26 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '@firebase/auth';
-import { BackendService } from './backend.service';
+import { BackendService } from '../backend.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'app-master',
+  templateUrl: './master.component.html',
+  styleUrls: ['./master.component.css']
 })
-export class AppComponent {
+export class MasterComponent implements OnInit {
   user: User | null = null;
 
   constructor(private readonly back : BackendService,
     private readonly zone : NgZone,
     private readonly router : Router) {
     back.getAuth().onAuthStateChanged(user => {
+      if(user == null) { zone.run(() => this.router.navigate(['/login'])) }
       this.user = user;
     })
+  }
+
+  ngOnInit(): void {
   }
 
   logout(){

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 import { FirebaseApp, initializeApp } from "firebase/app";
-import { getAuth, signInWithEmailAndPassword, signOut, UserCredential } from "firebase/auth";
+import { browserSessionPersistence, getAuth, onAuthStateChanged, setPersistence, signInWithEmailAndPassword, signOut, User, UserCredential } from "firebase/auth";
 
 
 @Injectable({
@@ -13,6 +13,8 @@ export class BackendService {
   firebaseApp: FirebaseApp;
   constructor() {
     this.firebaseApp = initializeApp(environment.firebaseConfig);
+    const auth = getAuth(this.firebaseApp)
+    setPersistence(auth, browserSessionPersistence );
   }
 
 
@@ -21,14 +23,13 @@ export class BackendService {
     return signInWithEmailAndPassword(auth, email, password);
   }
 
-  logout(){
+  logout() : Promise<void>{
     const auth = getAuth(this.firebaseApp);
     return signOut(auth);
   }
 
-  getCurrentUser(){
-    const auth = getAuth(this.firebaseApp);
-    return auth.currentUser;
+  getAuth(){
+    return getAuth(this.firebaseApp);
   }
 
 }

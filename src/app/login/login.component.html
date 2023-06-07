@@ -1,6 +1,8 @@
 <div class="topright">
-    <a routerLink="/"><h5>Back</h5></a>
+    <a routerLink="/"><h5>Retour</h5></a>
 </div>
+
+<app-big-title></app-big-title>
 
 <div align="center">
     <form [formGroup]="loginForm">
@@ -10,6 +12,5 @@
         <input type="password" formControlName="password">
         <br> <br>
         <button [disabled]='loginForm.invalid' (click)="login()">Connexion</button>
-        <button (click)="logout()">Déco</button>
     </form>
 </div>

@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { User } from '@firebase/auth';
 import { BackendService } from '../backend.service';
 
 @Component({
@@ -7,10 +9,23 @@ import { BackendService } from '../backend.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  user: any;
-  constructor(private readonly back: BackendService){
+  user: User | null = null;
+  constructor(private readonly back: BackendService,
+    private readonly zone : NgZone,
+    private readonly router : Router){ 
+    this.back.getAuth().onAuthStateChanged(user => {
+      if (user != null) { zone.run(() => this.router.navigate(['/master'])) }
+      this.user = user;
+    })
+    this.loginForm = new FormGroup({
+      email: new FormControl('', [Validators.email, Validators.required]),
+      password: new FormControl('', [Validators.required])
+    });
+  }
+
+  ngOnInit(): void {
     this.loginForm = new FormGroup({
       email: new FormControl('', [Validators.email, Validators.required]),
       password: new FormControl('', [Validators.required])
@@ -18,26 +33,12 @@ export class LoginComponent {
   }
 
   login(){
-    console.log(this.loginForm.controls['email'].value)
-    console.log(this.loginForm.controls['password'].value)
     this.back.login(this.loginForm.controls['email'].value, this.loginForm.controls['password'].value)
       .then((userCredential) => {
-        console.log(userCredential.user)
-        this.user = userCredential.user;
+        this.zone.run(() => this.router.navigate(['/master']));
       })
       .catch((error) => {
         console.log('MYERROR: '+error.code+' - '+error.message);
       })
   }
-
-  logout(){
-    this.user=undefined;
-    this.back.logout().then(
-      () => this.user = undefined
-    )
-    .catch((error) => {
-      console.log('MYERROR: '+error.code+' - '+error.message);
-    })
-  }
-
 }

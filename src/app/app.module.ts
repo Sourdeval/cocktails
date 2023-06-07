@@ -6,10 +6,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
+import { MasterComponent } from './master/master.component';
+import { BigTitleComponent } from './titles/big-title.component';
+import { LitTitleComponent } from './titles/lit-title.component';
 
 const ROUTES: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'master', component: MasterComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 
@@ -17,7 +21,10 @@ const ROUTES: Routes = [
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    MasterComponent,
+    BigTitleComponent,
+    LitTitleComponent
   ],
   imports: [
     BrowserModule,
