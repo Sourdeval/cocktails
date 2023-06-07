@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { BackendService } from '../backend.service';
 
 @Component({
   selector: 'app-login',
@@ -8,7 +9,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class LoginComponent {
   loginForm: FormGroup;
-  constructor(){
+  user: any;
+  constructor(private readonly back: BackendService){
     this.loginForm = new FormGroup({
       email: new FormControl('', [Validators.email, Validators.required]),
       password: new FormControl('', [Validators.required])
@@ -18,6 +20,24 @@ export class LoginComponent {
   login(){
     console.log(this.loginForm.controls['email'].value)
     console.log(this.loginForm.controls['password'].value)
+    this.back.login(this.loginForm.controls['email'].value, this.loginForm.controls['password'].value)
+      .then((userCredential) => {
+        console.log(userCredential.user)
+        this.user = userCredential.user;
+      })
+      .catch((error) => {
+        console.log('MYERROR: '+error.code+' - '+error.message);
+      })
+  }
+
+  logout(){
+    this.user=undefined;
+    this.back.logout().then(
+      () => this.user = undefined
+    )
+    .catch((error) => {
+      console.log('MYERROR: '+error.code+' - '+error.message);
+    })
   }
 
 }
