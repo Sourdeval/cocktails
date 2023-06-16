@@ -121,4 +121,5 @@ div.spacer{
 
 .error-snackbar .mat-simple-snackbar{
     justify-content: center !important;
+    font-weight: bold;
 }
