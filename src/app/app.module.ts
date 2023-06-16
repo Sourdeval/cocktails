@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
@@ -11,6 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { MasterComponent } from './master/master.component';
 import { BigTitleComponent } from './titles/big-title.component';
 import { LitTitleComponent } from './titles/lit-title.component';
+import { CustomErrorHandler } from './app.errorhandler';
 
 const ROUTES: Routes = [
   { path: '', component: HomeComponent },
@@ -35,7 +36,9 @@ const ROUTES: Routes = [
     MatSnackBarModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [
+    {provide: ErrorHandler, useClass: CustomErrorHandler}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
