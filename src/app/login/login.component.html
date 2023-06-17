@@ -11,6 +11,6 @@
         <h5>Mot de passe :</h5>
         <input type="password" formControlName="password">
         <br> <br>
-        <button [disabled]='loginForm.invalid' (click)="login()">Connexion</button>
+        <button mat-raised-button color="primary" [disabled]='loginForm.invalid' (click)="login()">Connexion</button>
     </form>
 </div>

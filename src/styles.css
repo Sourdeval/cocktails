@@ -105,14 +105,14 @@ div.spacer{
     position: fixed;
     top: 0;
     right:0;
-    margin:8px;
+    margin:12px;
 }
 
 .topleft{
     position: fixed;
     top: 0;
     left:0;
-    margin:8px;
+    margin:12px;
 }
 
 .error-snackbar{
@@ -122,4 +122,12 @@ div.spacer{
 .error-snackbar .mat-simple-snackbar{
     justify-content: center !important;
     font-weight: bold;
+}
+
+.mat-red {
+    background-color: red;
+}
+
+button{
+    color: whitesmoke;
 }

@@ -1,3 +1,5 @@
 <router-outlet></router-outlet>
 
-<button *ngIf="user != null" class="topleft" (click)="logout()">Déconnexion</button>
+<div class="topleft">
+    <button mat-raised-button color="red" *ngIf="user != null" (click)="logout()">Déconnexion</button>
+</div>
