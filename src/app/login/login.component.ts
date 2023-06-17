@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
   constructor(private readonly back: BackendService,
     private readonly zone : NgZone,
     private readonly router : Router,
-    private errorBar : MatSnackBar){ 
+    private readonly errorBar : MatSnackBar){ 
     this.back.getAuth().onAuthStateChanged(user => {
       if (user != null) { zone.run(() => this.router.navigate(['/master'])) }
       this.user = user;
@@ -43,7 +43,8 @@ export class LoginComponent implements OnInit {
         this.errorBar.open('Connexion impossible', undefined, {
           duration: 3000,
           panelClass: ['error-snackbar']
-        })
+        });
+        this.loginForm.controls['password'].setValue('');
       })
   }
 }
