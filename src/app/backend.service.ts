@@ -3,8 +3,9 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 import { FirebaseApp, initializeApp } from "firebase/app";
-import { browserSessionPersistence, getAuth, onAuthStateChanged, setPersistence, signInWithEmailAndPassword, signOut, User, UserCredential } from "firebase/auth";
-
+import { browserSessionPersistence, getAuth, setPersistence, signInWithEmailAndPassword, signOut, UserCredential } from "firebase/auth";
+import { getFirestore, doc, getDoc, DocumentSnapshot, DocumentData, setDoc } from "firebase/firestore"; 
+import { UserAccount } from './app.core';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class BackendService {
     setPersistence(auth, browserSessionPersistence );
   }
 
-
+  // Firebase Auth
   login(email: string, password: string) : Promise<UserCredential>{
     const auth = getAuth(this.firebaseApp);
     return signInWithEmailAndPassword(auth, email, password);
@@ -30,6 +31,33 @@ export class BackendService {
 
   getAuth(){
     return getAuth(this.firebaseApp);
+  }
+
+  // Firestore
+  getAccount(uid: string) : Promise<UserAccount>{
+    return new Promise( (resolve, reject) => {
+      this.getData("users", uid).then(
+        data => {
+          if (data.exists()){
+            resolve(data.data() as UserAccount);
+          } else {
+            reject();
+          }
+        }
+      ).catch(reject)
+    });
+  }
+
+  private getData(collection: string, id: string) : Promise<DocumentSnapshot<DocumentData>>{
+    const db = getFirestore(this.firebaseApp);
+    const docRef = doc(db, collection, id);
+    return getDoc(docRef);
+  }
+
+  createAccount(uid: string, name: string){
+    const db = getFirestore(this.firebaseApp);
+    const accountRef = doc(db, "users", uid);
+    return setDoc(accountRef, { name: name }, { merge: true });
   }
 
 }
