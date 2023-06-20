@@ -4,6 +4,15 @@
 
 <app-lit-title></app-lit-title>
 
-<div align="center" *ngIf="account">
-    <h3>{{account.name}}</h3>
-</div>
+<table>
+    <td></td>
+    <td>
+        <div align="center" *ngIf="account">
+            <h3>{{account.name}}</h3>
+        </div>
+    </td>
+    <td style="text-align: right;">
+        <button mat-raised-button (click)="editAccount()">Modifier</button>
+    </td>
+</table>
+
