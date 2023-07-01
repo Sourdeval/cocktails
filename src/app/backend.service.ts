@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { browserSessionPersistence, getAuth, setPersistence, signInWithEmailAndPassword, signOut, UserCredential } from "firebase/auth";
 import { getFirestore, doc, getDoc, DocumentSnapshot, DocumentData, setDoc } from "firebase/firestore"; 
-import { UserAccount } from './app.core';
+import { Party, UserAccount } from './app.core';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +44,7 @@ export class BackendService {
             reject();
           }
         }
-      ).catch(reject)
+      ).catch(err => { throw err; reject(); })
     });
   }
 
@@ -58,6 +58,20 @@ export class BackendService {
     const db = getFirestore(this.firebaseApp);
     const accountRef = doc(db, "users", uid);
     return setDoc(accountRef, { name: name }, { merge: true });
+  }
+
+  getParty(id: string) : Promise<Party>{
+    return new Promise( (resolve, reject) => {
+      this.getData("parties", id).then(
+        data => {
+          if (data.exists()){
+            resolve(data.data() as Party);
+          } else {
+            reject();
+          }
+        }
+      ).catch(err => {throw err; reject(); })
+    });
   }
 
 }

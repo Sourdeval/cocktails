@@ -2,7 +2,7 @@ import { Component, Inject, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '@firebase/auth';
 import { BackendService } from '../backend.service';
-import { UserAccount } from '../app.core';
+import { Party, UserAccount } from '../app.core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -13,6 +13,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 export class MasterComponent implements OnInit {
   user: User | null = null;
   account: UserAccount | null = null;
+  parties: Party[] = [];
 
   constructor(private readonly back : BackendService,
     private readonly zone : NgZone,
@@ -23,6 +24,7 @@ export class MasterComponent implements OnInit {
       this.user = user;
       back.getAccount(this.user?.uid ?? '').then(account => {
         this.account = account;
+        this.loadParties();
       }).catch(error => {
         const dialogRef = this.dialog.open(EditAccountDialog, {
           data: {name: this.account?.name ?? '', canExit: false},
@@ -32,6 +34,7 @@ export class MasterComponent implements OnInit {
           this.back.createAccount(this.user?.uid ?? '', result).then(() => {
             this.back.getAccount(this.user?.uid ?? '').then(account => {
               this.account = account;
+              this.loadParties();
             })
           }).catch(error => {
             zone.run(() => this.router.navigate(['/login'])); return;
@@ -53,9 +56,21 @@ export class MasterComponent implements OnInit {
       this.back.createAccount(this.user?.uid ?? '', result).then(() => {
         this.back.getAccount(this.user?.uid ?? '').then(account => {
           this.account = account;
+          this.loadParties();
         })
       })
     });
+  }
+
+  loadParties(){
+    this.parties = [];
+    if (this.account){
+      this.account.partiesId.forEach(partyId => {
+        this.back.getParty(partyId).then(party => {
+          this.parties.push(party);
+        })
+      });
+    }
   }
 }
 
