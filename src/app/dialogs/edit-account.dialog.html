@@ -1,9 +1,9 @@
-<h2 align="center" mat-dialog-title>Modifier son compte</h2>
-<div mat-dialog-content class="mat-typography">
+<h3 align="center">Modifier son compte</h3>
+<div align="center" mat-dialog-content class="mat-typography">
     <h3>Nouveau nom</h3>
     <input matInput [(ngModel)]="data.name">
 </div>
-<div mat-dialog-actions>
+<div align="center" mat-dialog-actions>
     <button mat-button *ngIf="data.canExit" (click)="onNoClick()">Cancel</button>
     <button mat-button [mat-dialog-close]="data.name" cdkFocusInitial>Ok</button>
 </div>

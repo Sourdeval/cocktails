@@ -65,7 +65,6 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'dialog-overview-example-dialog',
   templateUrl: '../dialogs/edit-account.dialog.html',
 })
 export class EditAccountDialog {

@@ -131,3 +131,7 @@ div.spacer{
 button{
     color: whitesmoke;
 }
+
+.mat-dialog-container{
+    background: linear-gradient(0deg, #d83a00 0%, #ffe100 100%);
+}
