@@ -6,7 +6,8 @@ export interface UserAccount{
 
 export interface Party{
     name: string,
-    cocktailsId: string[]
+    cocktailsId: string[],
+    opened: boolean
 }
 
 export interface Cocktail{

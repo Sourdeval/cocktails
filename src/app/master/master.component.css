@@ -6,3 +6,22 @@ table{
 td{
     width: 33%;
 }
+
+.mat-card{
+    margin: 14px;
+    width: 350px;
+    height: 70px;
+    border: solid 1px black;
+}
+
+.party{
+    background: linear-gradient(180deg, #fffb00, #999b00);
+}
+
+.open-party{
+    background: linear-gradient(180deg, #00FF00, #009900);
+}
+
+h4{
+    text-shadow: none;
+}

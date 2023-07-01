@@ -7,6 +7,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card'; 
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -41,7 +42,8 @@ const ROUTES: Routes = [
     BrowserAnimationsModule,
     MatButtonModule,
     MatDialogModule,
-    FormsModule
+    FormsModule,
+    MatCardModule
   ],
   providers: [
     {provide: ErrorHandler, useClass: CustomErrorHandler}

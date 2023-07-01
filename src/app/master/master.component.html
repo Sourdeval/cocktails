@@ -16,9 +16,19 @@
     </td>
 </table>
 
-<div style="display: flex;">
-    <div *ngFor="let p of parties">
-        <h5>{{p.name}}</h5>
-    </div>
+<h3>Soirées</h3>
+
+<div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
+    <mat-card *ngFor="let p of parties" class="party" [ngClass]="{'open-party' : p.opened}">
+        <h4>{{p.name}}</h4>
+        <h6 *ngIf="p.cocktailsId">
+            {{p.cocktailsId.length}} cocktail{{p.cocktailsId.length != 1 ? 's': ''}}
+        </h6>
+        <mat-card-actions align="end" style="position: absolute; bottom: 12px; right: 12px;">
+            <button mat-button>Ouvrir</button>
+            <button mat-button>Editer</button>
+            <button mat-button>Supprimer</button>
+        </mat-card-actions>
+    </mat-card>
 </div>
 
