@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card'; 
+import { MatChipsModule } from '@angular/material/chips'; 
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -46,7 +47,8 @@ const ROUTES: Routes = [
     MatButtonModule,
     MatDialogModule,
     FormsModule,
-    MatCardModule
+    MatCardModule,
+    MatChipsModule
   ],
   providers: [
     {provide: ErrorHandler, useClass: CustomErrorHandler}

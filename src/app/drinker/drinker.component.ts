@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { Cocktail, Party } from '../app.core';
+import { CocktailWithId, Party } from '../app.core';
 import { BackendService } from '../backend.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { BackendService } from '../backend.service';
 export class DrinkerComponent implements OnInit {
   partyNumber: string = '';
   party: Party | undefined;
-  cocktails: Cocktail[] = new Array();
+  cocktails: CocktailWithId[] = new Array();
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -33,7 +33,11 @@ export class DrinkerComponent implements OnInit {
               this.party = party;
               party.cocktailsId.forEach(id => {
                 this.back.getCocktail(id).then(cock =>{
-                  this.cocktails.push(cock);
+                  let cockId : CocktailWithId = {
+                    cock: cock,
+                    id: id
+                  }
+                  this.cocktails.push(cockId);
                 })
               })
             }

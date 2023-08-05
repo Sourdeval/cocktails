@@ -14,4 +14,10 @@ export interface Cocktail{
     name: string,
     ingredients: string[],
     image: string,
+    desc: string,
+}
+
+export interface CocktailWithId{
+    cock: Cocktail,
+    id: string
 }

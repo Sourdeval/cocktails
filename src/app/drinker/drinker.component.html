@@ -8,8 +8,17 @@
     {{party.name}}
 </h2>
 
-<div *ngIf="cocktails.length != 0">
-    <mat-card class="mat-elevation-z8" *ngFor="let cock of cocktails">
-        <h2>{{cock.name}}</h2>
+<div *ngIf="cocktails.length != 0" style="display: flex; flex-wrap: wrap; justify-content: space-around;">
+    <mat-card class="mat-elevation-z8" style="max-width: 500px;" *ngFor="let cockid of cocktails">
+        <mat-card-header>
+            <img mat-card-xl-image src="assets/{{cockid.cock.image}}.jpg" alt="">
+            <mat-card-title>
+                <h3>{{cockid.cock.name}}</h3>
+                <mat-chip-list>
+                    <mat-chip color="accent" *ngFor="let ing of cockid.cock.ingredients">{{ing}}</mat-chip>
+                </mat-chip-list>
+                <h6 style="margin-top: 12px;">{{cockid.cock.desc}}</h6>
+            </mat-card-title>
+        </mat-card-header>
     </mat-card>
 </div>
