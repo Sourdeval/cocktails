@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { browserSessionPersistence, getAuth, setPersistence, signInWithEmailAndPassword, signOut, UserCredential } from "firebase/auth";
 import { getFirestore, doc, getDoc, DocumentSnapshot, DocumentData, setDoc } from "firebase/firestore"; 
-import { Party, UserAccount } from './app.core';
+import { Cocktail, Party, UserAccount } from './app.core';
 
 @Injectable({
   providedIn: 'root'
@@ -66,6 +66,20 @@ export class BackendService {
         data => {
           if (data.exists()){
             resolve(data.data() as Party);
+          } else {
+            reject();
+          }
+        }
+      ).catch(err => {reject(); throw err;})
+    });
+  }
+
+  getCocktail(id: string) : Promise<Cocktail>{
+    return new Promise( (resolve, reject) => {
+      this.getData("cocktails", id).then(
+        data => {
+          if (data.exists()){
+            resolve(data.data() as Cocktail);
           } else {
             reject();
           }

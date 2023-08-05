@@ -8,6 +8,7 @@
     <form [formGroup]="numberForm">
         <h3>Entrez le code de la soirée :</h3>
         <input type="text" formControlName='code'>
-        <button [disabled]="!numberForm.valid" (click)='submitCode()'>OK</button>
+        <button mat-raised-button color="primary"
+         [disabled]="!numberForm.valid" (click)='submitCode()'>OK</button>
     </form>
 </div>

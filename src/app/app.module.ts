@@ -16,11 +16,13 @@ import { EditAccountDialog, MasterComponent } from './master/master.component';
 import { BigTitleComponent } from './titles/big-title.component';
 import { LitTitleComponent } from './titles/lit-title.component';
 import { CustomErrorHandler } from './app.errorhandler';
+import { DrinkerComponent } from './drinker/drinker.component';
 
 const ROUTES: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'master', component: MasterComponent },
+  { path: ':id', component: DrinkerComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 
@@ -32,7 +34,8 @@ const ROUTES: Routes = [
     MasterComponent,
     BigTitleComponent,
     LitTitleComponent,
-    EditAccountDialog
+    EditAccountDialog,
+    DrinkerComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,11 @@
+.partyNumber{
+    border: 2px black solid;
+}
+
+.mat-card{
+    margin-top: 12px;
+    margin-left: 8px;
+    margin-right: 8px;
+    background:  linear-gradient(180deg, #ffaa00 0%, #ffe100 100%);
+    border: 1px solid black;
+}

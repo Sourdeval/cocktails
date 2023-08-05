@@ -1,0 +1,15 @@
+<div class="topright partyNumber">
+    <h3>{{partyNumber}}</h3>
+</div>
+
+<app-lit-title></app-lit-title>
+
+<h2 align="center" *ngIf="party">
+    {{party.name}}
+</h2>
+
+<div *ngIf="cocktails.length != 0">
+    <mat-card class="mat-elevation-z8" *ngFor="let cock of cocktails">
+        <h2>{{cock.name}}</h2>
+    </mat-card>
+</div>
