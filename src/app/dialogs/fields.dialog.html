@@ -1,9 +1,11 @@
 <h3 align="center">Modifier son compte</h3>
 <div align="center" mat-dialog-content class="mat-typography">
-    <h3>Nouveau nom</h3>
-    <input matInput [(ngModel)]="data.name">
+    <div *ngFor="let f of fieldsName">
+        <h3>{{f}}</h3>
+        <input matInput [(ngModel)]="data.fields[f]">
+    </div>
 </div>
 <div align="center" mat-dialog-actions>
     <button mat-button *ngIf="data.canExit" (click)="onNoClick()">Cancel</button>
-    <button mat-button [mat-dialog-close]="data.name" cdkFocusInitial>Ok</button>
+    <button mat-button [mat-dialog-close]="data.fields" cdkFocusInitial>Ok</button>
 </div>

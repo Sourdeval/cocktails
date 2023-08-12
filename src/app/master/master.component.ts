@@ -2,9 +2,9 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '@firebase/auth';
 import { BackendService } from '../backend.service';
-import { PartyWithId, UserAccount } from '../app.core';
+import { Party, PartyWithId, UserAccount } from '../app.core';
 import { MatDialog } from '@angular/material/dialog';
-import { EditAccountDialog } from '../dialogs/edit-account.dialog';
+import { FieldsDialog } from '../dialogs/fields.dialog';
 import { CONFIRMED, ConfirmDialog } from '../dialogs/confirm.dialog';
 
 @Component({
@@ -28,8 +28,14 @@ export class MasterComponent implements OnInit {
         this.account = account;
         this.loadParties();
       }).catch(error => {
-        const dialogRef = this.dialog.open(EditAccountDialog, {
-          data: {name: this.account?.name ?? '', canExit: false},
+        let neededFields: { [id: string] : string; } = {};
+        neededFields['Nouveau nom'] = "";
+        const dialogRef = this.dialog.open(FieldsDialog, {
+          data: {
+            name: this.account?.name ?? '',
+            canExit: false,
+            fields: neededFields,
+          }
         });
     
         dialogRef.afterClosed().subscribe(result => {
@@ -50,15 +56,21 @@ export class MasterComponent implements OnInit {
   }
 
   editAccount() {
-    const dialogRef = this.dialog.open(EditAccountDialog, {
-      data: {name: this.account?.name ?? '', canExit: true},
+    let neededFields: { [id: string] : string; } = {};
+    neededFields['Nouveau nom'] = this.account?.name ?? '';
+    const dialogRef = this.dialog.open(FieldsDialog, {
+      data: {
+        name: this.account?.name ?? '',
+        canExit: true,
+        fields: neededFields
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (!result){
+      if (!result || !result['Nouveau nom']){
         return;
       }
-      this.back.createAccount(this.user?.uid ?? '', result).then(() => {
+      this.back.createAccount(this.user?.uid ?? '', result['Nouveau nom']).then(() => {
         this.back.getAccount(this.user?.uid ?? '').then(account => {
           this.account = account;
           this.loadParties();
@@ -91,8 +103,44 @@ export class MasterComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result == CONFIRMED){
-        console.log('delete');
+        this.back.deleteParty(party.id, this.user?.uid ?? '').then(
+          () => {this.loadParties();}
+        )
       }
-    })
+    });
+  }
+
+  addParty(){
+    let neededFields: { [id: string] : string; } = {};
+    neededFields['Nom de la soirée'] = '';
+    const dialogRef = this.dialog.open(FieldsDialog, {
+      data: {
+        name: this.account?.name ?? '',
+        canExit: true,
+        fields: neededFields
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result || !result['Nom de la soirée']){
+        return;
+      }
+      let party: Party = {
+        name: result['Nom de la soirée'],
+        opened: false,
+        cocktailsId: [],
+      }
+      let newId = '';
+      this.back.getNewPartyId().then(data => {
+        newId = data;
+        if (newId == ''){ return; }
+        this.back.setParty(newId, this.user?.uid ?? '', party).then(() => {
+          this.back.getAccount(this.user?.uid ?? '').then(account => {
+            this.account = account;
+            this.loadParties();
+          })
+        })
+      })
+    });
   }
 }

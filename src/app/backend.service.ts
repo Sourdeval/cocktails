@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { browserSessionPersistence, getAuth, setPersistence, signInWithEmailAndPassword, signOut, UserCredential } from "firebase/auth";
 import { getFirestore, doc, getDoc, DocumentSnapshot, DocumentData, setDoc, deleteDoc } from "firebase/firestore"; 
-import { Cocktail, Party, UserAccount } from './app.core';
+import { Cocktail, ConfigCocktail, Party, UserAccount } from './app.core';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +21,8 @@ export class BackendService {
   private readonly COL_PARTY = 'parties';
   private readonly COL_USER = 'users';
   private readonly COL_COCKTAIL = 'cocktails';
+  private readonly COL_CONFIG = 'config';
+  private readonly DOC_CONFIG = 'config';
 
   // Firebase Auth
   login(email: string, password: string) : Promise<UserCredential>{
@@ -98,10 +100,60 @@ export class BackendService {
           data.partiesId = data.partiesId.filter(partyId => {
             return partyId !== id;
           })
-          return this.updateData(this.COL_USER, uid, data);
+          this.updateData(this.COL_USER, uid, data).then(() => resolve())
         });
       })
     ]);
+  }
+
+  setParty(id: string, uid: string, party: Party) : Promise<void[]>{
+    return Promise.all([
+      this.updateData(this.COL_PARTY, id, party),
+      new Promise<void>( (resolve, reject) => {
+        this.getAccount(uid).then(data => {
+          data.partiesId.push(id);
+          console.log(data)
+          this.updateData(this.COL_USER, uid, data).then(() => resolve());
+        });
+      }),
+      new Promise<void>( (resolve, reject) => {
+        this.getData(this.COL_CONFIG, this.DOC_CONFIG).then(config => {
+          if (config.exists()){
+            let configCocktail = config.data() as ConfigCocktail;
+            configCocktail.partyIds.push(id);
+            this.updateData(this.COL_CONFIG, this.DOC_CONFIG, configCocktail).then(() => resolve());
+          }
+        })
+      })
+    ]);
+  }
+
+  getNewPartyId(): Promise<string>{
+    return new Promise( (resolve, reject) => {
+      this.getData(this.COL_CONFIG, this.DOC_CONFIG).then(config => {
+        if (config.exists()){
+          let configCocktail = config.data() as ConfigCocktail;
+          for(let i=0; i<999; i++){
+            let newId = (Math.floor(Math.random()*899+100)).toString();
+            console.log('id')
+            console.log(newId)
+            if (configCocktail.partyIds.indexOf(newId) < 0){
+              resolve(newId);
+              return;
+            }
+          }
+          for(let i=0; i<999; i++){
+            let newId = (Math.random()*8999+1000).toString();
+            if (configCocktail.partyIds.indexOf(newId) < 0){
+              resolve(newId);
+              return;
+            }
+          }
+        }
+        reject();
+    })
+    
+    });
   }
 
   getCocktail(id: string) : Promise<Cocktail>{

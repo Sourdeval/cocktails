@@ -16,7 +16,12 @@
     </td>
 </table>
 
-<h3>Soirées</h3>
+<div style="display: block ruby;">
+    <h3>Soirées</h3>
+    <button mat-fab color="primary" (click)="addParty()">
+        <mat-icon>add</mat-icon>
+    </button>
+</div>
 
 <div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
     <mat-card *ngFor="let p of parties" class="party" [ngClass]="{'open-party' : p.party.opened}">
@@ -32,4 +37,3 @@
         </mat-card-actions>
     </mat-card>
 </div>
-

@@ -2,13 +2,19 @@ import { Component, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 
 @Component({
-    templateUrl: '../dialogs/edit-account.dialog.html',
+    templateUrl: '../dialogs/fields.dialog.html',
 })
-export class EditAccountDialog {
+export class FieldsDialog {
+    fieldsName: string[] = [];
+
     constructor(
-        public dialogRef: MatDialogRef<EditAccountDialog>,
+        public dialogRef: MatDialogRef<FieldsDialog>,
         @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    ) { }
+    ) {
+        for (let fieldName in data.fields){
+            this.fieldsName.push(fieldName);
+        }
+    }
 
     onNoClick(): void {
         this.dialogRef.close();
@@ -16,6 +22,8 @@ export class EditAccountDialog {
 }
 
 export interface DialogData {
+    title: string,
+    fields: { [id: string] : string; },
     name: string;
     canExit: boolean;
 }

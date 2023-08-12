@@ -26,3 +26,7 @@ export interface PartyWithId{
     party: Party,
     id: string
 }
+
+export interface ConfigCocktail{
+    partyIds: string[]
+}

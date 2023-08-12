@@ -9,6 +9,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card'; 
 import { MatChipsModule } from '@angular/material/chips'; 
+import { MatIconModule } from '@angular/material/icon'; 
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -18,7 +19,7 @@ import { BigTitleComponent } from './titles/big-title.component';
 import { LitTitleComponent } from './titles/lit-title.component';
 import { CustomErrorHandler } from './app.errorhandler';
 import { DrinkerComponent } from './drinker/drinker.component';
-import { EditAccountDialog } from './dialogs/edit-account.dialog';
+import { FieldsDialog } from './dialogs/fields.dialog';
 import { ConfirmDialog } from './dialogs/confirm.dialog';
 
 const ROUTES: Routes = [
@@ -37,7 +38,7 @@ const ROUTES: Routes = [
     MasterComponent,
     BigTitleComponent,
     LitTitleComponent,
-    EditAccountDialog,
+    FieldsDialog,
     ConfirmDialog,
     DrinkerComponent
   ],
@@ -51,7 +52,8 @@ const ROUTES: Routes = [
     MatDialogModule,
     FormsModule,
     MatCardModule,
-    MatChipsModule
+    MatChipsModule,
+    MatIconModule
   ],
   providers: [
     {provide: ErrorHandler, useClass: CustomErrorHandler}
