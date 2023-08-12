@@ -1,9 +1,11 @@
-import { Component, Inject, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '@firebase/auth';
 import { BackendService } from '../backend.service';
-import { Party, UserAccount } from '../app.core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { PartyWithId, UserAccount } from '../app.core';
+import { MatDialog } from '@angular/material/dialog';
+import { EditAccountDialog } from '../dialogs/edit-account.dialog';
+import { CONFIRMED, ConfirmDialog } from '../dialogs/confirm.dialog';
 
 @Component({
   selector: 'app-master',
@@ -13,7 +15,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 export class MasterComponent implements OnInit {
   user: User | null = null;
   account: UserAccount | null = null;
-  parties: Party[] = [];
+  parties: PartyWithId[] = [];
 
   constructor(private readonly back : BackendService,
     private readonly zone : NgZone,
@@ -53,6 +55,9 @@ export class MasterComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if (!result){
+        return;
+      }
       this.back.createAccount(this.user?.uid ?? '', result).then(() => {
         this.back.getAccount(this.user?.uid ?? '').then(account => {
           this.account = account;
@@ -67,28 +72,27 @@ export class MasterComponent implements OnInit {
     if (this.account){
       this.account.partiesId.forEach(partyId => {
         this.back.getParty(partyId).then(party => {
-          this.parties.push(party);
+          this.parties.push({
+              party: party,
+              id:partyId
+            });
         })
       });
     }
   }
-}
 
-export interface DialogData {
-  name: string;
-  canExit: boolean;
-}
+  deleteParty(party: PartyWithId){
+    const dialogRef = this.dialog.open(ConfirmDialog,{
+      data: {
+        message: 'Voulez-vous vraiment supprimer la soirée "'+party.party.name+'" ?',
+        ok: 'Supprimer'
+      }
+    });
 
-@Component({
-  templateUrl: '../dialogs/edit-account.dialog.html',
-})
-export class EditAccountDialog {
-  constructor(
-    public dialogRef: MatDialogRef<EditAccountDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
-  ) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
+    dialogRef.afterClosed().subscribe(result => {
+      if (result == CONFIRMED){
+        console.log('delete');
+      }
+    })
   }
 }

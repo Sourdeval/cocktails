@@ -13,11 +13,13 @@ import { MatChipsModule } from '@angular/material/chips';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
-import { EditAccountDialog, MasterComponent } from './master/master.component';
+import { MasterComponent } from './master/master.component';
 import { BigTitleComponent } from './titles/big-title.component';
 import { LitTitleComponent } from './titles/lit-title.component';
 import { CustomErrorHandler } from './app.errorhandler';
 import { DrinkerComponent } from './drinker/drinker.component';
+import { EditAccountDialog } from './dialogs/edit-account.dialog';
+import { ConfirmDialog } from './dialogs/confirm.dialog';
 
 const ROUTES: Routes = [
   { path: '', component: HomeComponent },
@@ -36,6 +38,7 @@ const ROUTES: Routes = [
     BigTitleComponent,
     LitTitleComponent,
     EditAccountDialog,
+    ConfirmDialog,
     DrinkerComponent
   ],
   imports: [

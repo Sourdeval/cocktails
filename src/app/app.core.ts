@@ -21,3 +21,8 @@ export interface CocktailWithId{
     cock: Cocktail,
     id: string
 }
+
+export interface PartyWithId{
+    party: Party,
+    id: string
+}

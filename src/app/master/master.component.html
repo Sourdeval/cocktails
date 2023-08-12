@@ -19,16 +19,16 @@
 <h3>Soirées</h3>
 
 <div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
-    <mat-card *ngFor="let p of parties" class="party" [ngClass]="{'open-party' : p.opened}">
-        <h4>{{p.name}}</h4>
-        <h6 *ngIf="p.cocktailsId">
-            {{p.cocktailsId.length}} cocktail{{p.cocktailsId.length != 1 ? 's': ''}}
+    <mat-card *ngFor="let p of parties" class="party" [ngClass]="{'open-party' : p.party.opened}">
+        <h4>{{p.party.name}}</h4>
+        <h6 *ngIf="p.party.cocktailsId">
+            {{p.party.cocktailsId.length}} cocktail{{p.party.cocktailsId.length != 1 ? 's': ''}}
         </h6>
         <mat-card-actions align="end" style="position: absolute; bottom: 12px; right: 12px;">
-            <button mat-button *ngIf="!p.opened">Ouvrir</button>
-            <button mat-button *ngIf="p.opened">Fermer</button>
+            <button mat-button *ngIf="!p.party.opened">Ouvrir</button>
+            <button mat-button *ngIf="p.party.opened">Fermer</button>
             <button mat-button>Editer</button>
-            <button mat-button>Supprimer</button>
+            <button mat-button (click)="deleteParty(p)">Supprimer</button>
         </mat-card-actions>
     </mat-card>
 </div>
