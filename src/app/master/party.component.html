@@ -1,0 +1,8 @@
+<app-lit-title></app-lit-title>
+
+<button mat-raised-button style="position: absolute; margin-left: 6px;" routerLink="/master">Retour</button>
+<button mat-raised-button style="position: absolute; right: 6px;" (click)="changeName()">Renommer</button>
+
+<div align="center" *ngIf="party">
+    <h3 style="max-width: 80%;">{{party.party.name}}</h3>
+</div>
