@@ -22,7 +22,7 @@ export class DrinkerComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe((params: ParamMap) => {
       var id = params.get('id');
-      if (id !== '508'){
+      if (!id){
         this.router.navigate(['']);
       }
       else {
