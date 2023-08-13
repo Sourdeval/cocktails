@@ -7,9 +7,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card'; 
-import { MatChipsModule } from '@angular/material/chips'; 
-import { MatIconModule } from '@angular/material/icon'; 
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -56,7 +57,8 @@ const ROUTES: Routes = [
     FormsModule,
     MatCardModule,
     MatChipsModule,
-    MatIconModule
+    MatIconModule,
+    MatSelectModule
   ],
   providers: [
     {provide: ErrorHandler, useClass: CustomErrorHandler}

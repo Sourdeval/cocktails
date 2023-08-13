@@ -23,14 +23,19 @@
                 <mat-icon>close</mat-icon>
             </button>
             <button mat-mini-fab color="" (click)="removeCocktail(c.link.id)">
-                <mat-icon>remove</mat-icon>
+                <mat-icon>delete</mat-icon>
             </button>
         </mat-card-actions>
     </mat-card>
     
     <mat-card class="addCocktail cocktail">
+        <mat-select #selectNewCocktail (click)="getAllCocktails()">
+            <mat-option *ngFor="let cocktail of allCocktailList" [value]="cocktail.id">
+                {{cocktail.cock.name}}
+            </mat-option>
+        </mat-select>
         <mat-card-actions align="end" style="position: absolute; bottom: 15px; right: 12px;">
-            <button mat-mini-fab color="">
+            <button mat-mini-fab color="" (click)="addCocktailToParty()">
                 <mat-icon>add</mat-icon>
             </button>
         </mat-card-actions>

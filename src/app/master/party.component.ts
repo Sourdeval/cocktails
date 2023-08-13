@@ -1,11 +1,12 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { BackendService } from '../backend.service';
 import { User } from 'firebase/auth';
-import { CocktailOfParty, PartyWithId, UserAccount } from '../app.core';
+import { CocktailOfParty, CocktailWithId, PartyWithId, UserAccount } from '../app.core';
 import { MatDialog } from '@angular/material/dialog';
 import { FieldsDialog } from '../dialogs/fields.dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-party',
@@ -17,6 +18,8 @@ export class PartyComponent implements OnInit {
   account: UserAccount | null = null;
   party: PartyWithId | null = null;
   partyCocktails: CocktailOfParty[] = [];
+  allCocktailList: CocktailWithId[] = [];
+  @ViewChild('selectNewCocktail') selectNewCocktail : MatSelect | undefined;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -46,6 +49,7 @@ export class PartyComponent implements OnInit {
   }
 
   loadParty(id: string){
+    this.partyCocktails = [];
     if (id == '') { return; }
     this.back.getParty(id).then(data => {
       this.party = {
@@ -104,6 +108,11 @@ export class PartyComponent implements OnInit {
         this.partyCocktails = this.partyCocktails.filter(cock => {
           return cock.link.id !== id;
         })
+        if (this.allCocktailList.length !== 0){
+          this.back.getCocktail(id).then(data => {
+            this.allCocktailList.push({cock: data, id:id, new: false});
+          })
+        }
       }).catch(() => {
         if (this.party){
           this.party.party.cocktails = temp;
@@ -141,6 +150,54 @@ export class PartyComponent implements OnInit {
           }
         })
       }
+    }
+  }
+
+  getAllCocktails(){
+    if (this.allCocktailList.length === 0){
+      let allPromises: Promise<void>[] = [];
+      this.account?.cocktailsId.forEach(id => {
+        if (this.party){
+          if (this.party?.party.cocktails.findIndex(link => link.id === id) < 0){
+            allPromises.push(new Promise<void>( (resolve, reject) => {
+              this.back.getCocktail(id).then(data => {
+                this.allCocktailList.push({cock: data, id: id, new: false})
+                resolve();
+              })
+            }));
+          }
+        }
+        else {
+          allPromises.push(new Promise<void>( (resolve, reject) => {
+            this.back.getCocktail(id).then(data => {
+              this.allCocktailList.push({cock: data, id: id, new: false})
+              resolve();
+            })
+          }));
+        }
+      })
+      Promise.all(allPromises).then(() => {
+        this.selectNewCocktail?.open();
+      })
+    }
+  }
+
+  addCocktailToParty(){
+    if (this.party && this.selectNewCocktail?.value){
+      let id = this.selectNewCocktail.value;
+      let temp = this.party.party.cocktails;
+      this.party.party.cocktails.push({ id:id, outOfStock: false })
+      this.back.setParty(this.party.id, this.party.party).then(() => {
+        if (this.party && this.selectNewCocktail){
+          this.loadParty(this.party.id);
+          this.selectNewCocktail.value = undefined;
+          this.allCocktailList = this.allCocktailList.filter(cock => cock.id !== id);
+        }
+      }).catch(() => {
+        if (this.party){
+          this.party.party.cocktails = temp;
+        }
+      })
     }
   }
 
