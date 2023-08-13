@@ -108,6 +108,17 @@ export class BackendService {
           })
           this.updateData(this.COL_USER, uid, data).then(() => resolve())
         });
+      }),
+      new Promise<void>( (resolve, reject) => {
+        this.getData(this.COL_CONFIG, this.DOC_CONFIG).then(config => {
+          if (config.exists()){
+            let configCocktail = config.data() as ConfigCocktail;
+            configCocktail.partyIds = configCocktail.partyIds.filter(partyId => {
+              return partyId !== id;
+            })
+            this.updateData(this.COL_CONFIG, this.DOC_CONFIG, configCocktail).then(() => resolve());
+          }
+        })
       })
     ]);
   }

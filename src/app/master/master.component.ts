@@ -126,7 +126,14 @@ export class MasterComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result == CONFIRMED){
         this.back.deleteParty(party.id, this.user?.uid ?? '').then(
-          () => {this.loadParties();}
+          () => {
+            if (this.account){
+              this.account.partiesId = this.account.partiesId.filter(id =>{
+                return id !== party.id;
+              });
+            }
+            this.loadParties();
+          }
         )
       }
     });
