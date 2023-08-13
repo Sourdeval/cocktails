@@ -1,0 +1,38 @@
+.cocktail {
+    background: linear-gradient(180deg, #0022ff, #00eeff);
+    margin: 2%;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    width: 96%;
+    height: 20px;
+    border: solid 1px black;
+}
+
+.addCocktail{
+    background: linear-gradient(180deg, #424242, #c5c5c5);
+}
+
+h4{
+    text-shadow: none;
+}
+
+.mat-mini-fab{
+    margin-right: 8px;
+}
+
+.mat-chip-list{
+    margin-left: 12px;
+    margin-top: -10px;
+}
+
+.mat-chip:hover{
+    background-color: red;
+}
+
+.outOfStock{
+    background: linear-gradient(180deg, #424242, #6f6f6f);
+}
+
+.outOfStockchip{
+    background-color: #9f9f9f;
+}

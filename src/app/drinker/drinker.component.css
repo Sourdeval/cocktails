@@ -9,3 +9,15 @@
     background:  linear-gradient(180deg, #ffaa00 0%, #ffe100 100%);
     border: 1px solid black;
 }
+
+.outOfStock{
+    background: linear-gradient(180deg, #424242, #6f6f6f);
+}
+
+.outOfStockWarning{
+    rotate: 40deg;
+    position: absolute;
+    top: 40%;
+    right: 0;
+    z-index: 100;
+}

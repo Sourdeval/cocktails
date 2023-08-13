@@ -26,8 +26,8 @@
 <div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
     <mat-card *ngFor="let p of parties" class="party" [ngClass]="{'open-party' : p.party.opened}">
         <h4>{{p.party.name}}</h4>
-        <h6 *ngIf="p.party.cocktailsId">
-            {{p.party.cocktailsId.length}} cocktail{{p.party.cocktailsId.length != 1 ? 's': ''}}
+        <h6 *ngIf="p.party.cocktails">
+            {{p.party.cocktails.length}} cocktail{{p.party.cocktails.length != 1 ? 's': ''}}
         </h6>
         <a *ngIf="p.party.opened" routerLink="/{{p.id}}">
             <h6>Code d'entrée : {{p.id}}</h6>

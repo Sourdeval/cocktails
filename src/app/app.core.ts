@@ -6,7 +6,7 @@ export interface UserAccount{
 
 export interface Party{
     name: string,
-    cocktailsId: string[],
+    cocktails: CocktailPartyLink[],
     opened: boolean
 }
 
@@ -21,6 +21,16 @@ export interface CocktailWithId{
     cock: Cocktail,
     id: string,
     new: boolean
+}
+
+export interface CocktailOfParty{
+    cock: Cocktail,
+    link: CocktailPartyLink
+}
+
+export interface CocktailPartyLink{
+    id: string,
+    outOfStock: boolean
 }
 
 export interface PartyWithId{

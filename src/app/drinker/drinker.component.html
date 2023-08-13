@@ -9,7 +9,8 @@
 </h2>
 
 <div *ngIf="cocktails.length != 0" style="display: flex; flex-wrap: wrap; justify-content: space-around;">
-    <mat-card class="mat-elevation-z8" style="max-width: 500px;" *ngFor="let cockid of cocktails">
+    <mat-card class="mat-elevation-z8" style="max-width: 500px;" *ngFor="let cockid of cocktails" [ngClass]="{'outOfStock': cockid.link.outOfStock}">
+        <h1 *ngIf="cockid.link.outOfStock" class="outOfStockWarning">En Rupture</h1>
         <mat-card-header>
             <img mat-card-xl-image src="assets/{{cockid.cock.image}}.jpg" alt="">
             <mat-card-title>

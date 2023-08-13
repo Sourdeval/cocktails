@@ -157,7 +157,7 @@ export class MasterComponent implements OnInit {
       let party: Party = {
         name: result['Nom de la soirée'],
         opened: false,
-        cocktailsId: [],
+        cocktails: [],
       }
       let newId = '';
       this.back.getNewPartyId().then(data => {
