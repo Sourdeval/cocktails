@@ -2,7 +2,7 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '@firebase/auth';
 import { BackendService } from '../backend.service';
-import { Party, PartyWithId, UserAccount } from '../app.core';
+import { CocktailWithId, Party, PartyWithId, UserAccount } from '../app.core';
 import { MatDialog } from '@angular/material/dialog';
 import { FieldsDialog } from '../dialogs/fields.dialog';
 import { CONFIRMED, ConfirmDialog } from '../dialogs/confirm.dialog';
@@ -16,6 +16,7 @@ export class MasterComponent implements OnInit {
   user: User | null = null;
   account: UserAccount | null = null;
   parties: PartyWithId[] = [];
+  cocktails: CocktailWithId[] = [];
 
   constructor(private readonly back : BackendService,
     private readonly zone : NgZone,
@@ -27,7 +28,10 @@ export class MasterComponent implements OnInit {
       back.getAccount(this.user?.uid ?? '').then(account => {
         this.account = account;
         this.loadParties();
+        this.loadCocktails();
       }).catch(error => {
+        //Register
+        
         let neededFields: { [id: string] : string; } = {};
         neededFields['Nouveau nom'] = "";
         const dialogRef = this.dialog.open(FieldsDialog, {
@@ -43,6 +47,7 @@ export class MasterComponent implements OnInit {
             this.back.getAccount(this.user?.uid ?? '').then(account => {
               this.account = account;
               this.loadParties();
+              this.loadCocktails();
             })
           }).catch(error => {
             zone.run(() => this.router.navigate(['/login'])); return;
@@ -73,7 +78,6 @@ export class MasterComponent implements OnInit {
       this.back.createAccount(this.user?.uid ?? '', result['Nouveau nom']).then(() => {
         this.back.getAccount(this.user?.uid ?? '').then(account => {
           this.account = account;
-          this.loadParties();
         })
       })
     });
@@ -87,6 +91,20 @@ export class MasterComponent implements OnInit {
           this.parties.push({
               party: party,
               id:partyId
+            });
+        })
+      });
+    }
+  }
+
+  loadCocktails(){
+    this.cocktails = [];
+    if (this.account){
+      this.account.cocktailsId.forEach(cocktailId => {
+        this.back.getCocktail(cocktailId).then(cocktail => {
+          this.cocktails.push({
+              cock: cocktail,
+              id: cocktailId
             });
         })
       });
@@ -152,5 +170,13 @@ export class MasterComponent implements OnInit {
   closeParty(party: PartyWithId){
     party.party.opened = false;
     this.back.setParty(party.id, party.party);
+  }
+
+  addCocktail(){
+
+  }
+
+  deleteCocktail(c: CocktailWithId){
+    
   }
 }

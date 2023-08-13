@@ -7,15 +7,12 @@ td{
     width: 33%;
 }
 
-.mat-card{
+.party{
+    background: linear-gradient(180deg, #fffb00, #999b00);
     margin: 14px;
     width: 350px;
     height: 70px;
     border: solid 1px black;
-}
-
-.party{
-    background: linear-gradient(180deg, #fffb00, #999b00);
 }
 
 .open-party{
@@ -24,4 +21,23 @@ td{
 
 h4{
     text-shadow: none;
+}
+
+.cocktail {
+    background: linear-gradient(180deg, #0022ff, #00eeff);
+    margin: 2%;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    width: 96%;
+    height: 20px;
+    border: solid 1px black;
+}
+
+.mat-mini-fab{
+    margin-right: 8px;
+}
+
+.mat-chip-list{
+    margin-left: 12px;
+    margin-top: -10px;
 }

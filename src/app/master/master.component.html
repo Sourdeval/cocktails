@@ -29,14 +29,40 @@
         <h6 *ngIf="p.party.cocktailsId">
             {{p.party.cocktailsId.length}} cocktail{{p.party.cocktailsId.length != 1 ? 's': ''}}
         </h6>
-        <a routerLink="/{{p.id}}">
-            <h6 *ngIf="p.party.opened">Code d'entrée : {{p.id}}</h6>
+        <a *ngIf="p.party.opened" routerLink="/{{p.id}}">
+            <h6>Code d'entrée : {{p.id}}</h6>
         </a>
         <mat-card-actions align="end" style="position: absolute; bottom: 12px; right: 12px;">
             <button mat-button *ngIf="!p.party.opened" (click)="openParty(p)">Ouvrir</button>
             <button mat-button *ngIf="p.party.opened" (click)="closeParty(p)">Fermer</button>
             <button mat-button>Editer</button>
             <button mat-button (click)="deleteParty(p)">Supprimer</button>
+        </mat-card-actions>
+    </mat-card>
+</div>
+
+<div style="display: block ruby;">
+    <h3>Cocktails</h3>
+    <button mat-fab color="primary" (click)="addCocktail()">
+        <mat-icon>add</mat-icon>
+    </button>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
+    <mat-card *ngFor="let c of cocktails" class="cocktail">
+        <div style="display: ruby;">
+            <h4>{{c.cock.name}}</h4>
+            <mat-chip-list *ngIf="c.cock.ingredients">
+                <mat-chip color="accent" *ngFor="let ing of c.cock.ingredients"><h6>{{ing}}</h6></mat-chip>
+            </mat-chip-list>
+        </div>
+        <mat-card-actions align="end" style="position: absolute; bottom: 15px; right: 12px;">
+            <button mat-mini-fab color="">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-mini-fab color="red" (click)="deleteCocktail(c)">
+                <mat-icon>delete</mat-icon>
+            </button>
         </mat-card-actions>
     </mat-card>
 </div>
