@@ -174,4 +174,18 @@ export class BackendService {
     });
   }
 
+  deleteCocktail(id: string, uid: string): Promise<void[]>{
+    return Promise.all([
+      this.deleteData(this.COL_COCKTAIL, id),
+      new Promise<void>( (resolve, reject) => {
+        this.getAccount(uid).then(data => {
+          data.cocktailsId = data.cocktailsId.filter(cocktailId => {
+            return cocktailId !== id;
+          })
+          this.updateData(this.COL_USER, uid, data).then(() => resolve())
+        });
+      })
+    ]);
+  }
+
 }

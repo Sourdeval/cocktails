@@ -177,6 +177,19 @@ export class MasterComponent implements OnInit {
   }
 
   deleteCocktail(c: CocktailWithId){
-    
+    const dialogRef = this.dialog.open(ConfirmDialog,{
+      data: {
+        message: 'Voulez-vous vraiment supprimer le cocktail "'+c.cock.name+'" ?',
+        ok: 'Supprimer'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result == CONFIRMED){
+        this.back.deleteCocktail(c.id, this.user?.uid ?? '').then(
+          () => {this.loadCocktails();}
+        )
+      }
+    });
   }
 }
