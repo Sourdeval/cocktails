@@ -24,6 +24,5 @@ export class FieldsDialog {
 export interface DialogData {
     title: string,
     fields: { [id: string] : string; },
-    name: string;
     canExit: boolean;
 }

@@ -49,7 +49,7 @@
 </div>
 
 <div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
-    <mat-card *ngFor="let c of cocktails" class="cocktail">
+    <mat-card *ngFor="let c of cocktails" class="cocktail" [ngClass]="{'newCocktail': c.new}">
         <div style="display: ruby;">
             <h4>{{c.cock.name}}</h4>
             <mat-chip-list *ngIf="c.cock.ingredients">

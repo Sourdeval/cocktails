@@ -2,7 +2,7 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '@firebase/auth';
 import { BackendService } from '../backend.service';
-import { CocktailWithId, Party, PartyWithId, UserAccount } from '../app.core';
+import { Cocktail, CocktailWithId, Party, PartyWithId, UserAccount } from '../app.core';
 import { MatDialog } from '@angular/material/dialog';
 import { FieldsDialog } from '../dialogs/fields.dialog';
 import { CONFIRMED, ConfirmDialog } from '../dialogs/confirm.dialog';
@@ -36,7 +36,7 @@ export class MasterComponent implements OnInit {
         neededFields['Nouveau nom'] = "";
         const dialogRef = this.dialog.open(FieldsDialog, {
           data: {
-            name: this.account?.name ?? '',
+            title: "Création du compte",
             canExit: false,
             fields: neededFields,
           }
@@ -65,7 +65,7 @@ export class MasterComponent implements OnInit {
     neededFields['Nouveau nom'] = this.account?.name ?? '';
     const dialogRef = this.dialog.open(FieldsDialog, {
       data: {
-        name: this.account?.name ?? '',
+        title: "Modifier le compte",
         canExit: true,
         fields: neededFields
       },
@@ -89,9 +89,9 @@ export class MasterComponent implements OnInit {
       this.account.partiesId.forEach(partyId => {
         this.back.getParty(partyId).then(party => {
           this.parties.push({
-              party: party,
-              id:partyId
-            });
+            party: party,
+            id:partyId
+          });
         })
       });
     }
@@ -103,9 +103,13 @@ export class MasterComponent implements OnInit {
       this.account.cocktailsId.forEach(cocktailId => {
         this.back.getCocktail(cocktailId).then(cocktail => {
           this.cocktails.push({
-              cock: cocktail,
-              id: cocktailId
-            });
+            cock: cocktail,
+            id: cocktailId,
+            new: false
+          });
+          this.cocktails.sort((n1,n2) => {
+            return n1.cock.name.localeCompare(n2.cock.name);
+          });
         })
       });
     }
@@ -133,7 +137,7 @@ export class MasterComponent implements OnInit {
     neededFields['Nom de la soirée'] = '';
     const dialogRef = this.dialog.open(FieldsDialog, {
       data: {
-        name: this.account?.name ?? '',
+        title: "Créer une nouvelle soirée",
         canExit: true,
         fields: neededFields
       },
@@ -173,7 +177,39 @@ export class MasterComponent implements OnInit {
   }
 
   addCocktail(){
+    let neededFields: { [id: string] : string; } = {};
+    neededFields['Nom du cocktail'] = '';
+    const dialogRef = this.dialog.open(FieldsDialog, {
+      data: {
+        title: "Créer un nouveau cocktail",
+        canExit: true,
+        fields: neededFields
+      },
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result || !result['Nom du cocktail']){
+        return;
+      }
+      let cocktail: Cocktail = {
+        name: result['Nom du cocktail'],
+        ingredients: [],
+        image: '',
+        desc: ''
+      }
+      this.back.createCocktail(this.user?.uid ?? '', cocktail).then(id => {
+        if (id){
+          this.cocktails.push({
+            id: id,
+            cock: cocktail,
+            new: true
+          })
+          this.cocktails.sort((n1,n2) => {
+            return n1.cock.name.localeCompare(n2.cock.name);
+          });
+        }
+      });
+    });
   }
 
   deleteCocktail(c: CocktailWithId){

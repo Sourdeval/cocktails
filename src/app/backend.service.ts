@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { browserSessionPersistence, getAuth, setPersistence, signInWithEmailAndPassword, signOut, UserCredential } from "firebase/auth";
-import { getFirestore, doc, getDoc, DocumentSnapshot, DocumentData, setDoc, deleteDoc } from "firebase/firestore"; 
+import { getFirestore, doc, getDoc, DocumentSnapshot, DocumentData, setDoc, deleteDoc, addDoc, collection, DocumentReference } from "firebase/firestore"; 
 import { Cocktail, ConfigCocktail, Party, UserAccount } from './app.core';
 
 @Injectable({
@@ -47,7 +47,7 @@ export class BackendService {
           if (data.exists()){
             resolve(data.data() as UserAccount);
           } else {
-            reject();
+            reject("Account with id '"+uid+"' doesn't exist.");
           }
         }
       ).catch(err => { throw err; reject(); })
@@ -72,6 +72,12 @@ export class BackendService {
     return setDoc(docRef, data);
   }
 
+  private createData(collectionString: string, data: any): Promise<DocumentReference<any>>{
+    const db = getFirestore(this.firebaseApp);
+    const collec = collection(db, collectionString);
+    return addDoc(collec, data);
+  }
+
   createAccount(uid: string, name: string){
     const db = getFirestore(this.firebaseApp);
     const accountRef = doc(db, this.COL_USER, uid);
@@ -85,7 +91,7 @@ export class BackendService {
           if (data.exists()){
             resolve(data.data() as Party);
           } else {
-            reject();
+            reject("Party with id '"+id+"' doesn't exist.");
           }
         }
       ).catch(err => {reject(); throw err;})
@@ -116,7 +122,6 @@ export class BackendService {
       new Promise<void>( (resolve, reject) => {
         this.getAccount(uid).then(data => {
           data.partiesId.push(id);
-          console.log(data)
           this.updateData(this.COL_USER, uid, data).then(() => resolve());
         });
       }),
@@ -139,8 +144,6 @@ export class BackendService {
           let configCocktail = config.data() as ConfigCocktail;
           for(let i=0; i<999; i++){
             let newId = (Math.floor(Math.random()*899+100)).toString();
-            console.log('id')
-            console.log(newId)
             if (configCocktail.partyIds.indexOf(newId) < 0){
               resolve(newId);
               return;
@@ -167,7 +170,7 @@ export class BackendService {
           if (data.exists()){
             resolve(data.data() as Cocktail);
           } else {
-            reject();
+            reject("Cocktail with id '"+id+"' doesn't exist." );
           }
         }
       ).catch(err => {throw err; reject(); })
@@ -186,6 +189,18 @@ export class BackendService {
         });
       })
     ]);
+  }
+
+  createCocktail(uid: string, cocktail: Cocktail): Promise<string>{
+    return new Promise<string>( (resolve, reject) =>
+      this.createData(this.COL_COCKTAIL, cocktail).then(docRef => {
+        if (!docRef.id) { reject(); return; }
+        this.getAccount(uid).then(data => {
+          data.cocktailsId.push(docRef.id);
+          this.updateData(this.COL_USER, uid, data).then(() => resolve(docRef.id));
+        });
+      })
+    );
   }
 
 }

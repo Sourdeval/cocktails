@@ -19,7 +19,8 @@ export interface Cocktail{
 
 export interface CocktailWithId{
     cock: Cocktail,
-    id: string
+    id: string,
+    new: boolean
 }
 
 export interface PartyWithId{

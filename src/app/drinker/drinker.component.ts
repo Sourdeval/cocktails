@@ -35,7 +35,8 @@ export class DrinkerComponent implements OnInit {
                 this.back.getCocktail(id).then(cock =>{
                   let cockId : CocktailWithId = {
                     cock: cock,
-                    id: id
+                    id: id,
+                    new: false
                   }
                   this.cocktails.push(cockId);
                 })
