@@ -34,16 +34,19 @@ export class PartyComponent implements OnInit {
     var id: string | null = null;
     this.route.paramMap.subscribe((params: ParamMap) => {
       id = params.get('id');
-    });
-    if (!id) { this.zone.run(() => this.router.navigate(['/master'])); }
-    this.back.getAuth().onAuthStateChanged(user => {
-      if(user == null) { this.zone.run(() => this.router.navigate(['/login'])); return; }
-      this.user = user;
-      this.back.getAccount(this.user?.uid ?? '').then(account => {
-        this.account = account;
-        this.loadParty(id ?? '');
-      }).catch(() => {
-        this.zone.run(() => this.router.navigate(['/login']));
+      if (!id) { this.zone.run(() => this.router.navigate(['/master'])); }
+      this.back.getAuth().onAuthStateChanged(user => {
+        if(user == null) { this.zone.run(() => this.router.navigate(['/login'])); return; }
+        this.user = user;
+        this.back.getAccount(this.user?.uid ?? '').then(account => {
+          this.account = account;
+          if (!id || this.account.partiesId.indexOf(id) < 0){
+            this.zone.run(() => this.router.navigate(['/master']));
+          }
+          this.loadParty(id ?? '');
+        }).catch(() => {
+          this.zone.run(() => this.router.navigate(['/login']));
+        });
       });
     });
   }
