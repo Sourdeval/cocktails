@@ -134,7 +134,7 @@ export class MasterComponent implements OnInit {
       this.back.getNewPartyId().then(data => {
         newId = data;
         if (newId == ''){ return; }
-        this.back.setParty(newId, this.user?.uid ?? '', party).then(() => {
+        this.back.createParty(newId, this.user?.uid ?? '', party).then(() => {
           this.back.getAccount(this.user?.uid ?? '').then(account => {
             this.account = account;
             this.loadParties();
@@ -142,5 +142,15 @@ export class MasterComponent implements OnInit {
         })
       })
     });
+  }
+
+  openParty(party: PartyWithId){
+    party.party.opened = true;
+    this.back.setParty(party.id, party.party);
+  }
+
+  closeParty(party: PartyWithId){
+    party.party.opened = false;
+    this.back.setParty(party.id, party.party);
   }
 }

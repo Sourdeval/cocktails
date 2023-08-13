@@ -29,9 +29,12 @@
         <h6 *ngIf="p.party.cocktailsId">
             {{p.party.cocktailsId.length}} cocktail{{p.party.cocktailsId.length != 1 ? 's': ''}}
         </h6>
+        <a routerLink="/{{p.id}}">
+            <h6 *ngIf="p.party.opened">Code d'entrée : {{p.id}}</h6>
+        </a>
         <mat-card-actions align="end" style="position: absolute; bottom: 12px; right: 12px;">
-            <button mat-button *ngIf="!p.party.opened">Ouvrir</button>
-            <button mat-button *ngIf="p.party.opened">Fermer</button>
+            <button mat-button *ngIf="!p.party.opened" (click)="openParty(p)">Ouvrir</button>
+            <button mat-button *ngIf="p.party.opened" (click)="closeParty(p)">Fermer</button>
             <button mat-button>Editer</button>
             <button mat-button (click)="deleteParty(p)">Supprimer</button>
         </mat-card-actions>

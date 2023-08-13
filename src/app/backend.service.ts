@@ -106,7 +106,11 @@ export class BackendService {
     ]);
   }
 
-  setParty(id: string, uid: string, party: Party) : Promise<void[]>{
+  setParty(id: string, party: Party) : Promise<void>{
+    return this.updateData(this.COL_PARTY, id, party);
+  }
+
+  createParty(id: string, uid: string, party: Party) : Promise<void[]>{
     return Promise.all([
       this.updateData(this.COL_PARTY, id, party),
       new Promise<void>( (resolve, reject) => {
