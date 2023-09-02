@@ -1,0 +1,8 @@
+<app-lit-title></app-lit-title>
+
+<button mat-raised-button style="position: absolute; margin-left: 6px;" routerLink="/master">Retour</button>
+<button mat-raised-button style="position: absolute; right: 6px;" (click)="changeName()">Renommer</button>
+
+<div *ngIf="cocktail" align="center">
+    <h1>{{cocktail.cock.name}}</h1>
+</div>

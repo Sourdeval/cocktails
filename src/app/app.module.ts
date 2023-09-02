@@ -23,12 +23,14 @@ import { DrinkerComponent } from './drinker/drinker.component';
 import { FieldsDialog } from './dialogs/fields.dialog';
 import { ConfirmDialog } from './dialogs/confirm.dialog';
 import { PartyComponent } from './master/party.component';
+import { CocktailComponent } from './master/cocktail.component';
 
 const ROUTES: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'master', component: MasterComponent },
-  { path: 'master/:id', component: PartyComponent },
+  { path: 'master/party/:id', component: PartyComponent },
+  { path: 'master/cocktail/:id', component: CocktailComponent },
   { path: ':id', component: DrinkerComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
@@ -44,7 +46,8 @@ const ROUTES: Routes = [
     FieldsDialog,
     ConfirmDialog,
     DrinkerComponent,
-    PartyComponent
+    PartyComponent,
+    CocktailComponent
   ],
   imports: [
     BrowserModule,

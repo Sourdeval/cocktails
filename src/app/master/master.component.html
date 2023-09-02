@@ -35,7 +35,7 @@
         <mat-card-actions align="end" style="position: absolute; bottom: 12px; right: 12px;">
             <button mat-button *ngIf="!p.party.opened" (click)="openParty(p)">Ouvrir</button>
             <button mat-button *ngIf="p.party.opened" (click)="closeParty(p)">Fermer</button>
-            <button mat-button routerLink="/master/{{p.id}}">Editer</button>
+            <button mat-button routerLink="/master/party/{{p.id}}">Editer</button>
             <button mat-button (click)="deleteParty(p)">Supprimer</button>
         </mat-card-actions>
     </mat-card>
@@ -57,7 +57,7 @@
             </mat-chip-list>
         </div>
         <mat-card-actions align="end" style="position: absolute; bottom: 15px; right: 12px;">
-            <button mat-mini-fab color="">
+            <button mat-mini-fab color="" routerLink="/master/cocktail/{{c.id}}">
                 <mat-icon>edit</mat-icon>
             </button>
             <button mat-mini-fab color="red" (click)="deleteCocktail(c)">

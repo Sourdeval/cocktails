@@ -214,4 +214,8 @@ export class BackendService {
     );
   }
 
+  setCocktail(id: string, cocktail: Cocktail) : Promise<void>{
+    return this.updateData(this.COL_COCKTAIL, id, cocktail);
+  }
+
 }
