@@ -1,0 +1,34 @@
+img{
+    height: 74vh;
+    object-fit: contain;
+    margin: 0;
+}
+
+.mat-chip:hover{
+    background-color: red;
+}
+
+.addIngredient:hover{
+    background-color: #00ff00;
+}
+
+.mat-chip-list-wrapper{
+    justify-content: space-evenly;
+}
+
+textarea{
+    resize: none;
+    font-family: 'Raleway', 'Trebuchet MS', Arial, sans-serif;
+    font-size: 100%;
+    border: solid 1px black;
+}
+
+textarea:focus{
+    outline:none !important;
+    outline-width: 0 !important;
+    box-shadow: none;
+}
+
+::ng-deep .mat-chip-list-wrapper{
+    justify-content: space-evenly;
+}

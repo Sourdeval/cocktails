@@ -4,5 +4,23 @@
 <button mat-raised-button style="position: absolute; right: 6px;" (click)="changeName()">Renommer</button>
 
 <div *ngIf="cocktail" align="center">
-    <h1>{{cocktail.cock.name}}</h1>
+    <h2>{{cocktail.cock.name}}</h2>
+
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
+        <img src="assets/{{cocktail.cock.image}}.jpg" alt="">
+        <div style="max-width: 300px;">
+            <h3>Ingrédients</h3>
+            <mat-chip-list *ngIf="cocktail.cock.ingredients">
+                <mat-chip color="accent" *ngFor="let ing of cocktail.cock.ingredients" (click)="deleteIngredient(ing)"><h5 style="color: black">{{ing}}</h5></mat-chip>
+                <mat-chip color="accent" class="addIngredient" (click)="addIngredient()"><mat-icon>add</mat-icon></mat-chip>
+            </mat-chip-list>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; flex-direction: column;">
+            <h3>Description</h3>
+            <form [formGroup]="descriptionForm">
+                <textarea cols="30" rows="10" maxlength="1000" formControlName="desc"></textarea>
+            </form>
+            <button mat-raised-button (click)="changeDescription()">Valider</button>
+        </div>
+    </div>
 </div>
