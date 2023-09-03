@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { BackendService } from '../backend.service';
 import { User } from 'firebase/auth';
@@ -21,6 +21,8 @@ export class CocktailComponent implements OnInit {
   cocktail: CocktailWithId | null = null;
   descriptionForm: FormGroup;
   imageURL: string = '';
+  @ViewChild('inputImage') inputImage : ElementRef<HTMLElement> | undefined;
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router : Router,
@@ -221,5 +223,66 @@ export class CocktailComponent implements OnInit {
         });
       })
     });
+  }
+
+  addImage(){
+    if (this.inputImage){
+      this.inputImage.nativeElement.click();
+    }
+  }
+
+  onFileSelected(event: any){
+    const file:File = event.target.files[0];
+    console.log(file);
+    if (file.type !== "image/jpeg" && file.type !== "image/png"){
+      this.errorBar.open("Ce fichier n'est pas une image", undefined, {
+        duration: 3000,
+        panelClass: ['error-snackbar']
+      });
+      return;
+    }
+    if (file.size > this.imageBack.MAX_SIZE){
+      this.errorBar.open("L'image est trop volumineuse", undefined, {
+        duration: 3000,
+        panelClass: ['error-snackbar']
+      });
+      return;
+    }
+    let generatedId = this.generateId(30);
+    let newName = generatedId + '.' + file.name.split('.').pop();
+    this.imageBack.uploadImageCocktail(file, newName).then(() => {
+      if (this.cocktail){
+        this.cocktail.cock.image = newName;
+        this.back.setCocktail(this.cocktail.id, this.cocktail.cock).then(() => {
+          this.loadCocktail(this.cocktail?.id ?? '');
+        }).catch(() => {
+          if (this.cocktail){
+            this.cocktail.cock.image = '';
+            this.errorBar.open("Impossible d'ajouter l'image", undefined, {
+              duration: 3000,
+              panelClass: ['error-snackbar']
+            });
+          }
+        });
+      }
+      this.errorBar.open("Image ajoutée", undefined, {
+        duration: 3000,
+        panelClass: ['good-snackbar']
+      });
+    }).catch(() => {
+      this.errorBar.open("Impossible d'ajouter l'image", undefined, {
+        duration: 3000,
+        panelClass: ['error-snackbar']
+      });
+    })
+  }
+
+  generateId(size: number): string{
+    let chars = 'abcdef0123456789';
+    let ret = '';
+    for (let i=0; i<size; i++){
+      ret += chars.charAt(Math.random()*(chars.length));
+    }
+    return ret;
   }
 }

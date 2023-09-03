@@ -119,7 +119,11 @@ div.spacer{
     background-color: red;
 }
 
-.error-snackbar .mat-simple-snackbar{
+.good-snackbar{
+    background-color: green;
+}
+
+.error-snackbar .mat-simple-snackbar .good-snackbar{
     justify-content: center !important;
     font-weight: bold;
 }
