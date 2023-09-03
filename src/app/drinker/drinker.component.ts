@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { CocktailOfParty, Party } from '../app.core';
+import { Cocktail, CocktailOfParty, CocktailPartyLink, Party } from '../app.core';
 import { BackendService } from '../backend.service';
+import { ImageService } from '../image.service';
 
 @Component({
   selector: 'app-drinker',
@@ -17,6 +18,7 @@ export class DrinkerComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly router : Router,
     private readonly back : BackendService,
+    private readonly imageBack: ImageService,
     ) { }
 
   ngOnInit(): void {
@@ -33,11 +35,16 @@ export class DrinkerComponent implements OnInit {
               this.party = party;
               party.cocktails.forEach(link => {
                 this.back.getCocktail(link.id).then(cock =>{
-                  let cockId : CocktailOfParty = {
-                    cock: cock,
-                    link: link
+                  if (!cock.image){
+                    this.addCocktailToList(cock, link, '');
                   }
-                  this.cocktails.push(cockId);
+                  else {
+                    this.imageBack.getCocktailImage(cock.image).then(url => {
+                      this.addCocktailToList(cock, link, url);
+                    }).catch(() => {
+                      this.addCocktailToList(cock, link, '');
+                    })
+                  }
                 })
               })
             }
@@ -52,4 +59,12 @@ export class DrinkerComponent implements OnInit {
     } );
   }
 
+  private addCocktailToList(cock: Cocktail, link: CocktailPartyLink, imageUrl: string){
+    let cockId = {
+      cock: cock,
+      link: link,
+      imageUrl: imageUrl
+    }
+    this.cocktails.push(cockId);
+  }
 }

@@ -8,6 +8,7 @@ import { FieldsDialog } from '../dialogs/fields.dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmDialog } from '../dialogs/confirm.dialog';
+import { ImageService } from '../image.service';
 
 @Component({
   selector: 'app-cocktail',
@@ -19,6 +20,7 @@ export class CocktailComponent implements OnInit {
   account: UserAccount | null = null;
   cocktail: CocktailWithId | null = null;
   descriptionForm: FormGroup;
+  imageURL: string = '';
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router : Router,
@@ -26,6 +28,7 @@ export class CocktailComponent implements OnInit {
     private readonly zone : NgZone,
     public dialog: MatDialog,
     private readonly errorBar : MatSnackBar,
+    private readonly imageBack: ImageService
   ) {
     this.descriptionForm = new FormGroup({
       desc: new FormControl('', [Validators.maxLength(1000)])
@@ -62,6 +65,16 @@ export class CocktailComponent implements OnInit {
         new: false
       }
       this.descriptionForm.controls['desc'].setValue(data.desc);
+      if (data.image){
+        this.imageBack.getCocktailImage(this.cocktail.cock.image).then(url => {
+          this.imageURL = url;
+        }).catch(() => {
+          this.errorBar.open("Impossible de récupérer l'image", undefined, {
+            duration: 3000,
+            panelClass: ['error-snackbar']
+          });
+        })
+      }
     });
   }
 

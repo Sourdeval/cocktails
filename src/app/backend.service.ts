@@ -11,7 +11,7 @@ import { Cocktail, ConfigCocktail, Party, UserAccount } from './app.core';
   providedIn: 'root'
 })
 export class BackendService {
-  firebaseApp: FirebaseApp;
+  private firebaseApp: FirebaseApp;
   constructor() {
     this.firebaseApp = initializeApp(environment.firebaseConfig);
     const auth = getAuth(this.firebaseApp)

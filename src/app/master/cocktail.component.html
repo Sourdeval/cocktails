@@ -7,7 +7,16 @@
     <h2>{{cocktail.cock.name}}</h2>
 
     <div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
-        <img src="assets/{{cocktail.cock.image}}.jpg" alt="">
+        <div *ngIf="imageURL">
+            <img src="{{imageURL}}" alt="">
+            <button mat-raised-button color="red" style="position: absolute; transform: translate(-100%, -0%); -ms-transform: translate(-100%, -0%)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+        <button *ngIf="!imageURL" mat-raised-button>
+            Ajouter une image
+            <mat-icon>photo_camera</mat-icon>
+        </button>
         <div style="max-width: 300px;">
             <h3>Ingrédients</h3>
             <mat-chip-list *ngIf="cocktail.cock.ingredients">

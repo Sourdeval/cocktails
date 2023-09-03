@@ -64,6 +64,7 @@ export class PartyComponent implements OnInit {
           this.partyCocktails.push({
             link: link,
             cock: data,
+            imageUrl: ''
           })
         })
       });

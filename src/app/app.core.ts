@@ -25,7 +25,8 @@ export interface CocktailWithId{
 
 export interface CocktailOfParty{
     cock: Cocktail,
-    link: CocktailPartyLink
+    link: CocktailPartyLink,
+    imageUrl: string
 }
 
 export interface CocktailPartyLink{
