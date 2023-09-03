@@ -146,7 +146,6 @@ export class CocktailComponent implements OnInit {
       }
       if (this.cocktail){
         let temp = this.cocktail.cock.ingredients;
-        console.log()
         this.cocktail.cock.ingredients = this.cocktail.cock.ingredients.filter( i => {
           return i !== ing;
         });
@@ -233,7 +232,6 @@ export class CocktailComponent implements OnInit {
 
   onFileSelected(event: any){
     const file:File = event.target.files[0];
-    console.log(file);
     if (file.type !== "image/jpeg" && file.type !== "image/png"){
       this.errorBar.open("Ce fichier n'est pas une image", undefined, {
         duration: 3000,
