@@ -191,4 +191,35 @@ export class CocktailComponent implements OnInit {
       }
     });
   }
+
+  deleteImage(){
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      data: {
+        message: 'Voulez-vous supprimer cette image ?',
+        ok: "Supprimer"
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result || !this.cocktail || !this.cocktail.cock.image){
+        return;
+      } 
+      this.imageBack.deleteImageCocktail(this.cocktail.cock.image).then(() => {
+        if (!this.cocktail) { return; }
+        let tempUrl = this.imageURL;
+        this.imageURL = '';
+        let temp = this.cocktail.cock.image;
+        this.cocktail.cock.image = '';
+        this.back.setCocktail(this.cocktail.id, this.cocktail.cock).catch(() => {
+          if (!this.cocktail) { return; }
+          this.cocktail.cock.image = temp;
+          this.imageURL = tempUrl;
+        })
+      }).catch(() => {
+        this.errorBar.open("Impossible de supprimer l'image", undefined, {
+          duration: 3000,
+          panelClass: ['error-snackbar']
+        });
+      })
+    });
+  }
 }

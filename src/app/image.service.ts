@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import { environment } from 'src/environments/environment';
-import { getDownloadURL, getStorage, ref } from "firebase/storage";
+import { deleteObject, getDownloadURL, getStorage, ref } from "firebase/storage";
 
 
 @Injectable({
@@ -17,5 +17,11 @@ export class ImageService {
     const storage = getStorage(this.firebaseApp);
     const storageRef = ref(storage, 'cocktailImages/'+img);
     return getDownloadURL(storageRef);
+  }
+
+  deleteImageCocktail(img: string){
+    const storage = getStorage(this.firebaseApp);
+    const storageRef = ref(storage, 'cocktailImages/'+img);
+    return deleteObject(storageRef);
   }
 }

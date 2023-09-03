@@ -9,7 +9,9 @@
     <div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
         <div *ngIf="imageURL">
             <img src="{{imageURL}}" alt="">
-            <button mat-raised-button color="red" style="position: absolute; transform: translate(-100%, -0%); -ms-transform: translate(-100%, -0%)">
+            <button mat-raised-button color="red"
+                (click)="deleteImage()"
+                style="position: absolute; transform: translate(-100%, -0%); -ms-transform: translate(-100%, -0%)">
                 <mat-icon>delete</mat-icon>
             </button>
         </div>
